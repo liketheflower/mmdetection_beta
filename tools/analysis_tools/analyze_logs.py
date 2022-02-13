@@ -5,6 +5,7 @@ from collections import defaultdict
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 # import seaborn as sns
 
@@ -52,7 +53,8 @@ def plot_curve(log_dicts, args):
                 legend.append(f"{json_log}_{metric}")
     assert len(legend) == (len(args.json_logs) * len(args.keys))
     metrics = args.keys
-
+    x_values = []
+    y_values = []
     num_metrics = len(metrics)
     for i, log_dict in enumerate(log_dicts):
         epochs = list(log_dict.keys())
@@ -69,11 +71,15 @@ def plot_curve(log_dicts, args):
                 ax = plt.gca()
                 ax.set_xticks(xs)
                 plt.xlabel("epoch")
-                print("xs", xs)
+                print("xs", len(xs))
+                """
                 if len(xs) < 100:
                     xs = list(range(1, 101))
                     last_y = ys[-1]
                     ys = ys + [last_y] * (len(xs) - len(ys))
+                """
+                x_values.append(xs)
+                y_values.append(ys)
                 plt.plot(xs, ys, label=legend[i * num_metrics + j], marker="o")
             else:
                 xs = []
@@ -87,11 +93,18 @@ def plot_curve(log_dicts, args):
                     ys.append(np.array(log_dict[epoch][metric][: len(iters)]))
                 xs = np.concatenate(xs)
                 ys = np.concatenate(ys)
+                x_values.append(xs)
+                y_values.append(ys)
                 plt.xlabel("iter")
                 plt.plot(xs, ys, label=legend[i * num_metrics + j], linewidth=0.5)
             plt.legend()
         if args.title is not None:
             plt.title(args.title)
+    df = pd.DataFrame({"legend": legend, "x_values": x_values, "y_values": y_values})
+    # TODO[Jimmy] Support saving all the result instead of only the first key is saved
+    save_fn = "./results/" + args.keys[0] + ".pkl"
+    print(f"{args.keys[0]} result will be saved ...")
+    df.to_pickle(save_fn)
     if args.out is None:
         plt.show()
     else:
