@@ -1,6 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import warnings
-
+import pandas as pd
 import torch.nn as nn
 import torch.utils.checkpoint as cp
 from mmcv.cnn import build_conv_layer, build_norm_layer, build_plugin_layer
@@ -628,7 +628,7 @@ class ResNet(BaseModule):
             for param in m.parameters():
                 param.requires_grad = False
 
-    def forward(self, x):
+    def forward(self, x, save_outputs=False):
         """Forward function."""
         if self.deep_stem:
             x = self.stem(x)
@@ -643,6 +643,9 @@ class ResNet(BaseModule):
             x = res_layer(x)
             if i in self.out_indices:
                 outs.append(x)
+        if save_outputs:
+            df = pd.DataFrame({"outs": outs})
+            df.to_pickle("resnet_outs.pkl")
         return tuple(outs)
 
     def train(self, mode=True):
