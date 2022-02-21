@@ -2,6 +2,7 @@
 import warnings
 from collections import OrderedDict
 from copy import deepcopy
+import pandas as pd
 
 import torch
 import torch.nn as nn
@@ -742,7 +743,7 @@ class SwinTransformer(BaseModule):
             # load state_dict
             self.load_state_dict(state_dict, False)
 
-    def forward(self, x):
+    def forward(self, x, save_outputs=True):
         x, hw_shape = self.patch_embed(x)
 
         if self.use_abs_pos_embed:
@@ -759,5 +760,8 @@ class SwinTransformer(BaseModule):
                                self.num_features[i]).permute(0, 3, 1,
                                                              2).contiguous()
                 outs.append(out)
+        if save_outputs:
+            df = pd.DataFrame({"outs": outs})
+            df.to_pickle("swin_outs.pkl")
 
         return outs
