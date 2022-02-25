@@ -5,6 +5,11 @@ from PIL import Image as im
 import seaborn as sns
 import matplotlib.pylab as plt
 
+network = "swin"
+# network = "resnet"
+save_np_file = False
+save_rm_extreme_hist = True
+
 
 def normalize(a, min_=None, max_=None, clip=False):
     if min_ is None or max_ is None:
@@ -16,7 +21,12 @@ def normalize(a, min_=None, max_=None, clip=False):
     return new_a
 
 
-outputs = pd.read_pickle("/Users/jimmy/repos/jimmy/output_featuremap/swin_outs.pkl")
+if network == "swin":
+    outputs = pd.read_pickle("/Users/jimmy/repos/jimmy/output_featuremap/swin_outs.pkl")
+else:
+    outputs = pd.read_pickle(
+        "/Users/jimmy/repos/jimmy/output_featuremap/resnet_outs.pkl"
+    )
 outs = list(outputs["outs"])
 
 last_layer = outs[-1]
@@ -50,16 +60,29 @@ for i in range(32):
 
 
 last_np_normalize_flat = last_np_normalize.ravel()
+if save_np_file:
+    np.save(network + "last_np_normalize_flat.npy", last_np_normalize_flat)
 plt.hist(last_np_normalize_flat, bins=200)
 plt.show()
 plt.close()
 # uniform_data = np.random.rand(10, 12)
+
+if save_np_file:
+    np.save(network + "output_img_with_extreme_val.npy", output_img)
 ax = sns.heatmap(output_img)
 plt.show()
-# plt.savefig("swin_heap.pdf", dpi=500)
+# plt.savefig("swin_heap_300.pdf", dpi=300)
 # remove outlier
-last_np_normalize = normalize(last_np_normalize, 0.57, 0.7, clip=True)
+if network == "swin":
+    last_np_normalize = normalize(last_np_normalize, 0.57, 0.7, clip=True)
+else:
+    last_np_normalize = normalize(last_np_normalize, 0, 0.1, clip=True)
 
+last_np_normalize_flat = last_np_normalize.ravel()
+if save_rm_extreme_hist:
+    np.save(network + "last_np_normalize_flat_no_extreme.npy", last_np_normalize_flat)
+plt.hist(last_np_normalize_flat, bins=200)
+plt.show()
 output_img = np.ones((H * 32, W * 24), dtype=np.float)
 # output_img = output_img.dtype(np.uint8)
 idx = 0
@@ -69,7 +92,10 @@ for i in range(32):
         idx += 1
 
 
+if save_np_file:
+    np.save(network + "output_img_without_extreme_val.npy", output_img)
 last_np_normalize_flat = last_np_normalize.ravel()
+plt.close()
 plt.hist(last_np_normalize_flat, bins=200)
 plt.show()
 plt.close()

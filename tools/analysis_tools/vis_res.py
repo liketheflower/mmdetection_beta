@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
 """
-['/Users/jimmy/repos/jimmy/InterTrans/work_dirs/mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/InterTrans/work_dirs/mask_rcnn_r50_fpn_mstrain-poly_3x_coco/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/InterTrans/work_dirs/mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/InterTrans/work_dirs/mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain/cc.log.json_bbox_mAP']
+['/Users/jimmy/repos/jimmy/simCrossTrans/work_dirs/mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/simCrossTrans/work_dirs/mask_rcnn_r50_fpn_mstrain-poly_3x_coco/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/simCrossTrans/work_dirs/mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain/cc.log.json_bbox_mAP', '/Users/jimmy/repos/jimmy/simCrossTrans/work_dirs/mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain/cc.log.json_bbox_mAP']
 """
 
 
@@ -13,10 +13,10 @@ gray_color = "#878787"
 conv_color_lighter = "#878787"
 trans_color_lighter = "#abd9e9"
 log_experiment_name_map = {
-    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from": "Swin-T with InterTrans",
-    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco": "ResNet-50 with InterTrans",
-    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain": "Swin-T w/o InterTrans",
-    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain": "ResNet-50 w/o InterTrans",
+    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from": "Swin-T with simCrossTrans",
+    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco": "ResNet-50 with simCrossTrans",
+    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain": "Swin-T w/o simCrossTrans",
+    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain": "ResNet-50 w/o simCrossTrans",
 }
 
 
@@ -29,37 +29,37 @@ def get_experiment_name(log_path):
 
 
 markers = {
-    "Swin-T with InterTrans": "o",
-    "Swin-T w/o InterTrans": "o",
-    "ResNet-50 with InterTrans": "s",
-    "ResNet-50 w/o InterTrans": "s",
+    "Swin-T with simCrossTrans": "o",
+    "Swin-T w/o simCrossTrans": "o",
+    "ResNet-50 with simCrossTrans": "s",
+    "ResNet-50 w/o simCrossTrans": "s",
 }
 markersize = 3
 markersizes = {
-    "Swin-T with InterTrans": markersize,
-    "Swin-T w/o InterTrans": markersize,
-    "ResNet-50 with InterTrans": markersize,
-    "ResNet-50 w/o InterTrans": markersize,
+    "Swin-T with simCrossTrans": markersize,
+    "Swin-T w/o simCrossTrans": markersize,
+    "ResNet-50 with simCrossTrans": markersize,
+    "ResNet-50 w/o simCrossTrans": markersize,
 }
 colors = {
-    "Swin-T with InterTrans": trans_color,
-    "Swin-T w/o InterTrans": trans_color_lighter,
-    "ResNet-50 with InterTrans": conv_color,
-    "ResNet-50 w/o InterTrans": conv_color_lighter,
+    "Swin-T with simCrossTrans": trans_color,
+    "Swin-T w/o simCrossTrans": trans_color_lighter,
+    "ResNet-50 with simCrossTrans": conv_color,
+    "ResNet-50 w/o simCrossTrans": conv_color_lighter,
 }
 alphas = {
-    "Swin-T with InterTrans": 0.5,
-    "Swin-T w/o InterTrans": 0.35,
-    "ResNet-50 with InterTrans": 0.5,
-    "ResNet-50 w/o InterTrans": 0.35,
+    "Swin-T with simCrossTrans": 0.8,
+    "Swin-T w/o simCrossTrans": 0.55,
+    "ResNet-50 with simCrossTrans": 0.8,
+    "ResNet-50 w/o simCrossTrans": 0.55,
 }
 linea = "solid"
 lineb = "dashed"
 linestyles = {
-    "Swin-T with InterTrans": linea,
-    "Swin-T w/o InterTrans": lineb,
-    "ResNet-50 with InterTrans": linea,
-    "ResNet-50 w/o InterTrans": lineb,
+    "Swin-T with simCrossTrans": linea,
+    "Swin-T w/o simCrossTrans": lineb,
+    "ResNet-50 with simCrossTrans": linea,
+    "ResNet-50 w/o simCrossTrans": lineb,
 }
 
 
@@ -84,7 +84,8 @@ def vis_mAP_bbox(res_fn):
     # plt.ylabel("mAP@.5:.95 for SUN RGB-D 79 categories")
     plt.ylabel("mAP at IoU=.50:.05:.95")
     plt.title("SUN RGB-D 79 categories detection performance")
-    plt.savefig("mAP_bbox.eps", dpi=500)
+    plt.tight_layout()
+    plt.savefig("mAP_bbox.png", dpi=400)
     plt.show()
 
 

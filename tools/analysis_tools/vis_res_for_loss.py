@@ -13,10 +13,10 @@ gray_color = "#878787"
 conv_color_lighter = "#878787"
 trans_color_lighter = "#abd9e9"
 log_experiment_name_map = {
-    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from": "Swin-T with InterTrans",
-    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco": "ResNet-50 with InterTrans",
-    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain": "Swin-T w/o InterTrans",
-    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain": "ResNet-50 w/o InterTrans",
+    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from": "Swin-T with simCrossTrans",
+    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco": "ResNet-50 with simCrossTrans",
+    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_no_pretrain": "Swin-T w/o simCrossTrans",
+    "mask_rcnn_r50_fpn_mstrain-poly_3x_coco_no_pretrain": "ResNet-50 w/o simCrossTrans",
 }
 
 
@@ -29,35 +29,35 @@ def get_experiment_name(log_path):
 
 
 markers = {
-    "Swin-T with InterTrans": "o",
-    "Swin-T w/o InterTrans": "o",
-    "ResNet-50 with InterTrans": "s",
-    "ResNet-50 w/o InterTrans": "s",
+    "Swin-T with simCrossTrans": "o",
+    "Swin-T w/o simCrossTrans": "o",
+    "ResNet-50 with simCrossTrans": "s",
+    "ResNet-50 w/o simCrossTrans": "s",
 }
 markersize = 4.2
 markersizes = {
-    "Swin-T with InterTrans": markersize,
-    "Swin-T w/o InterTrans": markersize,
-    "ResNet-50 with InterTrans": markersize,
-    "ResNet-50 w/o InterTrans": markersize,
+    "Swin-T with simCrossTrans": markersize,
+    "Swin-T w/o simCrossTrans": markersize,
+    "ResNet-50 with simCrossTrans": markersize,
+    "ResNet-50 w/o simCrossTrans": markersize,
 }
 colors = {
-    "Swin-T with InterTrans": trans_color,
-    "Swin-T w/o InterTrans": trans_color_lighter,
-    "ResNet-50 with InterTrans": conv_color,
-    "ResNet-50 w/o InterTrans": conv_color_lighter,
+    "Swin-T with simCrossTrans": trans_color,
+    "Swin-T w/o simCrossTrans": trans_color_lighter,
+    "ResNet-50 with simCrossTrans": conv_color,
+    "ResNet-50 w/o simCrossTrans": conv_color_lighter,
 }
 alphas = {
-    "Swin-T with InterTrans": 1,
-    "Swin-T w/o InterTrans": 1,
-    "ResNet-50 with InterTrans": 1,
-    "ResNet-50 w/o InterTrans": 1,
+    "Swin-T with simCrossTrans": 1,
+    "Swin-T w/o simCrossTrans": 1,
+    "ResNet-50 with simCrossTrans": 1,
+    "ResNet-50 w/o simCrossTrans": 1,
 }
 linestyles = {
-    "Swin-T with InterTrans": "solid",
-    "Swin-T w/o InterTrans": "solid",
-    "ResNet-50 with InterTrans": "solid",
-    "ResNet-50 w/o InterTrans": "solid",
+    "Swin-T with simCrossTrans": "solid",
+    "Swin-T w/o simCrossTrans": "solid",
+    "ResNet-50 with simCrossTrans": "solid",
+    "ResNet-50 w/o simCrossTrans": "solid",
 }
 alpha = 0.85
 
@@ -139,11 +139,11 @@ if __name__ == "__main__":
     vis_loss_subplots("./results/loss_rpn_bbox.pkl", "RPN_BBOX_loss", 2)
     vis_loss_subplots("./results/loss_cls.pkl", "Classification_loss", 3)
     vis_loss_subplots("./results/loss_bbox.pkl", "BBOX_loss", 4)
-    plt.tight_layout()
     fig = plt.gcf()
     fig.set_size_inches((11.97, 8.36), forward=False)
     # fig.set_size_inches((12.31, 8.71), forward=False)
-    fig.savefig("loss_subplots_13inches.eps", dpi=500)
+    plt.tight_layout()
+    plt.savefig("loss_subplots_13inches.png", dpi=400)
 
     # plt.savefig("loss_subplots.eps", dpi=500)
     plt.show()
