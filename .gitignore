@@ -10,6 +10,10 @@ __pycache__/
 *.csv
 *.pkl
 *.p
+*.png
+*.npy
+*.pdf
+*.eps
 
 # Distribution / packaging
 .Python
