@@ -17,7 +17,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Train a detector")
     parser.add_argument("config", help="train config file path")
     parser.add_argument(
-        "--shape", type=int, nargs="+", default=[1280, 800], help="input image size"
+        "--shape", type=int, nargs="+", default=[800, 1120], help="input image size"
     )
     parser.add_argument(
         "--cfg-options",
