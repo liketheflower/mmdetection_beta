@@ -8,6 +8,7 @@ import seaborn as sns
 import matplotlib.pylab as plt
 
 # network = "swin"
+network = "resnet"
 def get_featuremap(network):
     # network = "resnet"
     if network == "swin":
@@ -70,4 +71,4 @@ def vis():
 
 
 # vis()
-vis_ij(36, 111)
+#vis_ij(36, 111)
