@@ -10,4 +10,4 @@ img=/data/sophia/a/Xiaoke.Shen54/DATASET/sunrgbd_DO_NOT_DELETE/val/dhs/006223_dh
 # resnet with simCrossTrans
 cfg=/data/sophia/a/Xiaoke.Shen54/repos/RGB2PC/configs/mask_rcnn/mask_rcnn_r50_fpn_mstrain-poly_3x_coco.py                        
 checkpoint=/data/sophia/a/Xiaoke.Shen54/repos/RGB2PC/work_dirs/mask_rcnn_r50_fpn_mstrain-poly_3x_coco/epoch_100.pth
-python image_demo_izzy.py $img $cfg $checkpoint --device=cpu 
+python image_demo_izzy.py $img $cfg $checkpoint --device=cpu > resnet_output.log 

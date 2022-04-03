@@ -6,18 +6,24 @@ import torch
 from mmcv import Config, DictAction
 
 from mmdet.models import build_detector
+import torchvision.models as models
+from ptflops import get_model_complexity_info
 
+"""
 try:
     from mmcv.cnn import get_model_complexity_info
 except ImportError:
     raise ImportError("Please upgrade mmcv to >0.6.2")
-
+"""
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a detector")
     parser.add_argument("config", help="train config file path")
+    #parser.add_argument(
+    #    "--shape", type=int, nargs="+", default=[1280, 800], help="input image size"
+    #)
     parser.add_argument(
-        "--shape", type=int, nargs="+", default=[1280, 800], help="input image size"
+        "--shape", type=int, nargs="+", default=[800, 1120], help="input image size"
     )
     parser.add_argument(
         "--cfg-options",
@@ -64,10 +70,12 @@ def main():
         cfg.merge_from_dict(args.cfg_options)
 
     model = build_detector(
-        cfg.model, train_cfg=cfg.get("train_cfg"), test_cfg=cfg.get("test_cfg")
-    )
+        cfg.model, train_cfg=cfg.get("train_cfg"), test_cfg=cfg.get("test_cfg"))
+    """
     if torch.cuda.is_available():
         model.cuda()
+    """
+    model.cpu()
     model.eval()
 
     if hasattr(model, "forward_dummy"):
@@ -78,8 +86,13 @@ def main():
                 model.__class__.__name__
             )
         )
-
-    flops, params = get_model_complexity_info(model, input_shape)
+    with torch.no_grad():
+        macs, params = get_model_complexity_info(model, (3, 800, 1120), as_strings=True,
+                                           print_per_layer_stat=True, verbose=True)
+    print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
+    print('{:<30}  {:<8}'.format('Number of parameters: ', params))
+    with torch.no_grad():
+        flops, params = get_model_complexity_info(model, input_shape)
     split_line = "=" * 30
 
     if divisor > 0 and input_shape != orig_shape:
