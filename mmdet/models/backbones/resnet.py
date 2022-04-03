@@ -630,6 +630,8 @@ class ResNet(BaseModule):
 
     def forward(self, x, save_outputs=False):
         """Forward function."""
+        if save_outputs:
+            print("input shape", x.shape)
         if self.deep_stem:
             x = self.stem(x)
         else:
