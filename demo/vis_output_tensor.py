@@ -5,9 +5,9 @@ from PIL import Image as im
 import seaborn as sns
 import matplotlib.pylab as plt
 
-network = "swin"
-# network = "resnet"
-save_np_file = False
+#network = "swin"
+network = "resnet"
+save_np_file = True
 save_rm_extreme_hist = True
 
 
@@ -36,7 +36,12 @@ print(last_np.shape)
 last_np = np.squeeze(last_np, axis=0)
 
 print(last_np.shape)
+
 """
+resnet
+
+swin
+
 >>> 25*32
 800
 >>> 35*24
@@ -50,13 +55,20 @@ last_np_normalize = normalize(last_np)
 # last_np_normalize = normalize(last_np_normalize, 0.57, 0.7)
 # last_np_normalize = last_np_normalize*255
 # last_np_normalize = last_np_normalize.dtype(np.uint8)
-output_img = np.ones((H * 32, W * 24), dtype=np.float)
 # output_img = output_img.dtype(np.uint8)
 idx = 0
-for i in range(32):
-    for j in range(24):
-        output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
-        idx += 1
+if network == "swin":
+    output_img = np.ones((H * 32, W * 24), dtype=np.float)
+    for i in range(32):
+        for j in range(24):
+            output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
+            idx += 1
+else:
+    output_img = np.ones((H * 64, W * 32), dtype=np.float)
+    for i in range(64):
+        for j in range(32):
+            output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
+            idx += 1
 
 
 last_np_normalize_flat = last_np_normalize.ravel()
@@ -68,7 +80,7 @@ plt.close()
 # uniform_data = np.random.rand(10, 12)
 
 if save_np_file:
-    np.save(network + "output_img_with_extreme_val.npy", output_img)
+    np.save(network + "output_img_with_extreme_val_new.npy", output_img)
 ax = sns.heatmap(output_img)
 plt.show()
 # plt.savefig("swin_heap_300.pdf", dpi=300)
@@ -83,17 +95,23 @@ if save_rm_extreme_hist:
     np.save(network + "last_np_normalize_flat_no_extreme.npy", last_np_normalize_flat)
 plt.hist(last_np_normalize_flat, bins=200)
 plt.show()
-output_img = np.ones((H * 32, W * 24), dtype=np.float)
 # output_img = output_img.dtype(np.uint8)
 idx = 0
-for i in range(32):
-    for j in range(24):
-        output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
-        idx += 1
-
+if network == "swin":
+    output_img = np.ones((H * 32, W * 24), dtype=np.float)
+    for i in range(32):
+        for j in range(24):
+            output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
+            idx += 1
+else:
+    output_img = np.ones((H * 64, W * 32), dtype=np.float)
+    for i in range(64):
+        for j in range(32):
+            output_img[i * H : i * H + H, j * W : j * W + W] = last_np_normalize[idx]
+            idx += 1
 
 if save_np_file:
-    np.save(network + "output_img_without_extreme_val.npy", output_img)
+    np.save(network + "output_img_without_extreme_val_new.npy", output_img)
 last_np_normalize_flat = last_np_normalize.ravel()
 plt.close()
 plt.hist(last_np_normalize_flat, bins=200)
