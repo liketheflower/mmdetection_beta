@@ -72,6 +72,7 @@ def plot_curve(log_dicts, args):
                 ax.set_xticks(xs)
                 plt.xlabel("epoch")
                 print("xs", len(xs))
+                print("ys", len(ys))
                 """
                 if len(xs) < 100:
                     xs = list(range(1, 101))
@@ -80,6 +81,10 @@ def plot_curve(log_dicts, args):
                 """
                 x_values.append(xs)
                 y_values.append(ys)
+                min_len = min(len(xs), len(ys))
+                # solve the length mismatch issue
+                xs = xs[:min_len]
+                ys = ys[:min_len]
                 plt.plot(xs, ys, label=legend[i * num_metrics + j], marker="o")
             else:
                 xs = []
