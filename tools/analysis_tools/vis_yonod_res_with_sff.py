@@ -8,6 +8,8 @@ import os
 """
 rgb_dhs_mixed_on_rgb_res = [0.165, 0.188, 0.201, 0.202, 0.205, 0.206, 0.212, 0.211, 0.225, 0.213, 0.208, 0.218, 0.217, 0.226, 0.222, 0.222, 0.226, 0.214, 0.223, 0.215, 0.215, 0.223, 0.222, 0.215, 0.21, 0.213, 0.217, 0.237, 0.243, 0.246, 0.244, 0.246, 0.246, 0.245, 0.245, 0.245, 0.244, 0.244, 0.245, 0.244, 0.244, 0.245, 0.246, 0.244, 0.244, 0.243, 0.244, 0.245, 0.243, 0.244, 0.245, 0.244, 0.246, 0.246, 0.245, 0.243, 0.244, 0.243, 0.244, 0.244, 0.245, 0.245, 0.245, 0.244, 0.245, 0.246, 0.244, 0.244, 0.244, 0.246, 0.244, 0.246, 0.244, 0.244, 0.245, 0.246, 0.247, 0.246, 0.247, 0.245, 0.248, 0.245, 0.245, 0.245, 0.245, 0.246, 0.245, 0.247, 0.245, 0.245, 0.247, 0.245, 0.245, 0.244, 0.246, 0.245, 0.244, 0.246, 0.245, 0.247]
 
+rgb_dhs_mixed_with_sff_on_rgb_res = [0.172, 0.193, 0.188, 0.198, 0.212, 0.205, 0.201, 0.186, 0.201, 0.199, 0.195, 0.194, 0.204, 0.193, 0.191, 0.179, 0.194, 0.194, 0.194, 0.184, 0.188, 0.185, 0.185, 0.17, 0.191, 0.177, 0.185, 0.209, 0.206, 0.206, 0.206, 0.207, 0.207, 0.205, 0.206, 0.204, 0.203, 0.204, 0.203, 0.205, 0.206, 0.204, 0.206, 0.205, 0.204, 0.205, 0.205, 0.205, 0.204, 0.204, 0.202, 0.203, 0.205, 0.204, 0.204, 0.203, 0.202, 0.203, 0.202, 0.203, 0.204, 0.204, 0.203, 0.203, 0.203, 0.204, 0.201, 0.203, 0.204, 0.204, 0.204, 0.202, 0.203, 0.203, 0.203, 0.202, 0.203, 0.203, 0.202, 0.202, 0.203, 0.202, 0.204, 0.204, 0.203, 0.204, 0.204, 0.203, 0.203, 0.201, 0.202, 0.203, 0.203, 0.202, 0.203, 0.203, 0.201, 0.202, 0.202, 0.2]
+
 conv_color = "#66bd63"
 trans_color = "#f46d43"
 gray_color = "#878787"
@@ -18,6 +20,7 @@ log_experiment_name_map = {
     "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_RGB_load_from": "rgb only model",
     "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_coco_load_from": "dhs only model",
     "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_sunrgbd_rgb_dhs_mixed": "unified model test on dhs",
+    "mask_rcnn_swin-t-p4-w7_fpn_ms-crop-3x_sunrgbd_rgb_dhs_mixed_with_sff":"unified model with SFF test on dhs"
 }
 
 
@@ -34,6 +37,8 @@ keys = [
     "dhs only model",
     "unified model test on rgb",
     "unified model test on dhs",
+    "unified model with SFF test on rgb",
+    "unified model with SFF test on dhs",
 ]
 
 markers = {
@@ -41,6 +46,8 @@ markers = {
     "dhs only model": "s",
     "unified model test on rgb": "o",
     "unified model test on dhs": "s",
+    "unified model with SFF test on rgb":"o",
+    "unified model with SFF test on dhs":"s",
 }
 markersize = 3.2
 markersizes = {
@@ -48,18 +55,24 @@ markersizes = {
     "dhs only model": markersize,
     "unified model test on rgb": markersize,
     "unified model test on dhs": markersize,
+    "unified model with SFF test on rgb":markersize,
+    "unified model with SFF test on dhs":markersize,
 }
 colors = {
     "rgb only model": gray_color,
     "dhs only model": gray_color,
     "unified model test on rgb": trans_color,
     "unified model test on dhs": conv_color,
+    "unified model with SFF test on rgb":"#0000ff",
+    "unified model with SFF test on dhs":"#0000ff",
 }
 alphas = {
     "rgb only model": 0.99,
     "dhs only model": 0.99,
     "unified model test on rgb": 0.99,
     "unified model test on dhs": 0.99,
+    "unified model with SFF test on rgb":0.99,
+    "unified model with SFF test on dhs":0.99,
 }
 linea = "solid"
 lineb = "dashed"
@@ -68,6 +81,8 @@ linestyles = {
     keys[1]: lineb,
     keys[2]: linea,
     keys[3]: linea,
+    keys[4]: linea,
+    keys[5]: linea,
 }
 
 
@@ -103,11 +118,24 @@ def vis_mAP_bbox(res_fn):
 	alpha=alphas[exp_name],
 	label=exp_name,
     )
-    rgb_dhs_mixed_on_rgb_xs = list(range(EPOCHS))
-    rgb_dhs_mixed_on_rgb_ys = rgb_dhs_mixed_on_rgb_res[:EPOCHS]
+
+
+    rgb_dhs_mixed_with_sff_on_rgb_ys = rgb_dhs_mixed_with_sff_on_rgb_res[:EPOCHS]                         
+    exp_name = keys[4]                                                                  
+    plt.plot(                                                                           
+        rgb_dhs_mixed_on_rgb_xs,                                                        
+        rgb_dhs_mixed_with_sff_on_rgb_ys,                                                        
+        marker=markers[exp_name],                                                       
+        markersize=markersizes[exp_name],                                               
+        linestyle=linestyles[exp_name],                                                 
+        c=colors[exp_name],                                                             
+        alpha=alphas[exp_name],                                                         
+        label=exp_name,                                                                 
+    )          
     
     for i, (exp_name, xs, ys) in enumerate(zip(df["experiment_name"], df["x_values"], df["y_values"])):
         # plt.plot(xs, ys, marker=markers[exp_name], c = colors[exp_name], alpha=alphas[exp_name], label=exp_name)
+        print(i, exp_name)
         if i != 2:continue
         xs = xs[:EPOCHS]
         ys = ys[:EPOCHS]
@@ -133,4 +161,4 @@ def vis_mAP_bbox(res_fn):
 
 
 if __name__ == "__main__":
-    vis_mAP_bbox("./results/bbox_mAP_50_v1.pkl")
+    vis_mAP_bbox("./results/bbox_mAP_50.pkl")
