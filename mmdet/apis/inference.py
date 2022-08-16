@@ -12,7 +12,7 @@ from mmdet.core import get_classes
 from mmdet.datasets import replace_ImageToTensor
 from mmdet.datasets.pipelines import Compose
 from mmdet.models import build_detector
-
+import time
 
 def init_detector(config, checkpoint=None, device='cuda:0', cfg_options=None):
     """Initialize a detector from config file.
@@ -144,7 +144,9 @@ def inference_detector(model, imgs):
 
     # forward the model
     with torch.no_grad():
+        begin = time.time()
         results = model(return_loss=False, rescale=True, **data)
+        print(f"Spent {time.time() - begin} to process this image")
 
     if not is_batch:
         return results[0]
